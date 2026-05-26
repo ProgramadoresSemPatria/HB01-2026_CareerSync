@@ -29,18 +29,15 @@ Candidatos chegam a entrevistas técnicas sem saber exatamente onde estão seus 
 
 ## Funcionalidades Principais
 
-| # | Feature | Descrição |
-|---|---------|-----------|
-| F01 | Upload & Parsing | Upload do currículo em PDF e extração de texto |
-| F02 | Match Score | Score de aderência à vaga com lista de gaps |
-| F03 | Navegação com Session | Guards de rota e estado persistido via Zustand |
-| F04 | Roadmap de Estudo | Plano de 7 dias gerado por IA baseado nos gaps |
-| F05 | Contexto por Gap | Explicação objetiva de cada skill para entrevistas |
-| F06 | Problemas LeetCode | Seleção personalizada de problemas por perfil |
-| F07 | Feedback de Solução | Avaliação de código com complexidade e dicas |
-| F08 | Pitch STAR | Cartões de pitch gerados a partir do histórico do candidato |
-| F09 | Simulador de Entrevista | Perguntas em áudio via TTS, resposta por voz |
-| F10 | Avaliação de Resposta | Score e feedback detalhado por resposta |
+- Upload do currículo em PDF e extração de texto
+- Match score de aderência à vaga com lista de gaps identificados
+- Plano de estudo de 7 dias gerado por IA baseado nos gaps
+- Explicação objetiva de cada skill para entrevistas
+- Seleção personalizada de problemas LeetCode por perfil e gaps
+- Avaliação de código com análise de complexidade e dicas de melhoria
+- Geração de cartões de pitch STAR a partir do histórico do candidato
+- Simulador de entrevista com perguntas em áudio (TTS) e resposta por voz
+- Feedback detalhado com score por resposta da entrevista
 
 ## Como Rodar Localmente
 
@@ -86,11 +83,7 @@ O app estará disponível em `http://localhost:5173`.
 
 Desenvolvido durante o Hackathon HB01-2026 — Programadores Sem Pátria.
 
-| Nome | GitHub |
-|------|--------|
-| Felipe Torres | [@FelipeTorres](https://github.com/FelipeTorres) |
-| José Nauã | [@JoseNaua](https://github.com/JoseNaua) |
-| Juliecio Cedraz | [@JuliecioCedraz](https://github.com/JuliecioCedraz) |
-| Thiago Emanuel | [@thiagoemanoel181](https://github.com/thiagoemanoel181) |
-
-Repositório: [github.com/ProgramadoresSemPatria/-HB01-2026_PrepOS](https://github.com/ProgramadoresSemPatria/-HB01-2026_PrepOS)
+- Felipe Torres
+- José Nauã
+- Juliecio Cedraz
+- Thiago Emanuel
