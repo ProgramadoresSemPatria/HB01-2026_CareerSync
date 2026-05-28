@@ -102,7 +102,6 @@ export function Layout() {
           </button>
         </div>
 
-        {/* Menu de Navegação */}
         <nav className="flex flex-col gap-1 px-3">
           {NAVIGATION_ITEMS.map((item) => (
             <NavLink
@@ -146,7 +145,6 @@ export function Layout() {
         </div>
       </aside>
 
-      {/* Janela de renderização Principal */}
       <main className="flex-1 overflow-y-auto relative p-6 pt-24 md:p-10 md:pt-10 transition-all duration-300">
         <Outlet />
       </main>
