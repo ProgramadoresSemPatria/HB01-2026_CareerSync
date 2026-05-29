@@ -238,7 +238,7 @@ export function AnalysisSummaryPage() {
               </button>
 
               <button
-                onClick={() => navigate("/leetcode")}
+                onClick={() => navigate("/code-challenge")}
                 className="flex items-center gap-3 p-4 bg-[#171717] border border-gray-700 hover:border-[#3ecf8e] rounded-xl transition-all group"
               >
                 <div className="bg-[#3ecf8e]/10 p-2 rounded-lg text-[#3ecf8e] group-hover:scale-110 transition-transform">

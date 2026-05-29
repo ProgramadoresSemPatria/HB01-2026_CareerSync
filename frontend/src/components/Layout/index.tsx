@@ -41,7 +41,7 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
   },
   {
     label: "Desafios Técnicos",
-    to: "/leetcode",
+    to: "/code-challenge",
     icon: <Code {...NAVIGATION_ICONS_SIZE} />,
   },
   {

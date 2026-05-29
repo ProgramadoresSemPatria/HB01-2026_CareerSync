@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { ContextPage } from "./pages/Context";
 import { InterviewPage } from "./pages/Interview";
-import { LeetCodePage } from "./pages/LeetCode";
+import { CodeChallengePage } from "./pages/CodeChallenge";
 import { PitchPage } from "./pages/Pitch";
 import { RoadmapPage } from "./pages/Roadmap";
 import { NewAnalysisPage } from "./pages/NewAnalysis";
@@ -55,10 +55,10 @@ export function AppRouter() {
           />
 
           <Route
-            path="/leetcode"
+            path="/code-challenge"
             element={
               <RequireAnalysis>
-                <LeetCodePage />
+                <CodeChallengePage />
               </RequireAnalysis>
             }
           />
