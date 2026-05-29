@@ -243,7 +243,7 @@ export function Layout() {
                   </div>
 
                   <NavLink
-                    to={`/analysis`}
+                    to={`/summary`}
                     onClick={() => {
                       setIsSidebarOpen(false);
                       loadSession(s.sessionId);

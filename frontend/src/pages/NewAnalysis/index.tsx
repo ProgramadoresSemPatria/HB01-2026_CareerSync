@@ -41,7 +41,7 @@ export function NewAnalysisPage() {
           fileName: fileName,
         });
 
-        navigate("/analysis", { state: { fromUpload: true } });
+        navigate("/summary", { state: { fromUpload: true } });
       },
     });
   }
