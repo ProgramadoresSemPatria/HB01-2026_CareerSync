@@ -9,27 +9,39 @@ export function UploadPage() {
   const [jobText, setJobText] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [fileName, setFileName] = useState("");
-  const setAnalysis = useSession((s) => s.setAnalysis);
-  const setSessionJobTitle = useSession((s) => s.setJobTitle);
-  const setSessionJobDescription = useSession((s) => s.setJobDescription);
-  const setResumeUrl = useSession((s) => s.setResumeUrl);
+  
+  const resetSession = useSession((s) => s.reset);
+  const matchScore = useSession((s) => s.matchScore);
+  const saveFullSession = useSession((s) => s.saveFullSession);
+  
   const { mutate: analyze, isPending, error } = useAnalyze();
 
-  function handleSubmit(e: React.SubmitEvent) {
+  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
+    
+    if (matchScore !== null) {
+      resetSession();
+    }
+
     const file = fileRef.current?.files?.[0];
     if (!file || !jobText.trim()) return;
+    
     const form = new FormData();
     form.append("pdf_file", file);
     form.append("job_text", jobText);
+    
     analyze(form, {
       onSuccess: (res) => {
-        setAnalysis(res.match_score, res.gaps, res.summary);
-        setSessionJobTitle(jobTitle || "Vaga");
-        setSessionJobDescription(jobText);
-        const objectUrl = URL.createObjectURL(file);
-        setResumeUrl(objectUrl);
-        navigate("/analysis");
+        saveFullSession({
+          score: res.match_score,
+          gaps: res.gaps,
+          summary: res.summary,
+          jobTitle: jobTitle || "Vaga não especificada",
+          jobDescription: jobText,
+          fileName: fileName,
+        });
+        
+        navigate("/analysis", { state: { fromUpload: true } });
       },
     });
   }
