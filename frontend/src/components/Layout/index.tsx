@@ -62,6 +62,8 @@ export function Layout() {
   const resetSession = useSession((s) => s.reset);
   const history = useSession((s) => s.history) || [];
   const loadSession = useSession((s) => s.loadSession);
+  const matchScore = useSession((s) => s.matchScore);
+  const hasAnalysis = matchScore !== null;
 
   const baseLinkStyle =
     "flex items-center text-sm font-medium transition-all duration-200 py-2.5 rounded-lg";
@@ -155,29 +157,40 @@ export function Layout() {
             </h2>
           </div>
 
-          {NAVIGATION_ITEMS.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              onClick={() => {
-                setIsSidebarOpen(false);
-                if (item.to === "/new") {
-                  resetSession();
+          {NAVIGATION_ITEMS.map((item) => {
+            const isDisabled = !hasAnalysis;
+
+            return (
+              <NavLink
+                key={item.to}
+                to={isDisabled ? "#" : item.to}
+                onClick={(e) => {
+                  if (isDisabled) {
+                    e.preventDefault();
+                    return;
+                  }
+                  setIsSidebarOpen(false);
+                }}
+                title={isDesktopCollapsed ? item.label : undefined}
+                className={({ isActive }) =>
+                  `${baseLinkStyle} ${
+                    isDisabled
+                      ? "opacity-35 cursor-not-allowed text-gray-500 pointer-events-none select-none"
+                      : isActive
+                      ? activeLinkStyle
+                      : inactiveLinkStyle
+                  } ${isDesktopCollapsed ? "justify-center px-0" : "px-3"}`
                 }
-              }}
-              title={isDesktopCollapsed ? item.label : undefined}
-              className={({ isActive }) =>
-                `${baseLinkStyle} ${isActive ? activeLinkStyle : inactiveLinkStyle} ${isDesktopCollapsed ? "justify-center px-0" : "px-3"}`
-              }
-            >
-              <span className="shrink-0">{item.icon}</span>
-              <span
-                className={`ml-3 whitespace-nowrap transition-all duration-300 overflow-hidden ${isDesktopCollapsed ? "w-0 ml-0 opacity-0" : "w-auto opacity-100"}`}
               >
-                {item.label}
-              </span>
-            </NavLink>
-          ))}
+                <span className="shrink-0">{item.icon}</span>
+                <span
+                  className={`ml-3 whitespace-nowrap transition-all duration-300 overflow-hidden ${isDesktopCollapsed ? "w-0 ml-0 opacity-0" : "w-auto opacity-100"}`}
+                >
+                  {item.label}
+                </span>
+              </NavLink>
+            );
+          })}
         </nav>
 
         <div
