@@ -4,6 +4,10 @@ __pycache__/
 .venv/
 *.egg-info/
 
+# Local DB / runtime artifacts
+*.db
+*.log
+
 # Node
 node_modules/
 dist/
