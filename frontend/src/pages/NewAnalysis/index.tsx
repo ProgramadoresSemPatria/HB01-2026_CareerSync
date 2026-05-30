@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAnalyze } from "../../lib/api";
+import { useCreateAnalysis } from "../../lib/api";
 import { useSession } from "../../store/session";
 
 export function NewAnalysisPage() {
@@ -14,7 +14,7 @@ export function NewAnalysisPage() {
   const matchScore = useSession((s) => s.matchScore);
   const saveFullSession = useSession((s) => s.saveFullSession);
 
-  const { mutate: analyze, isPending, error } = useAnalyze();
+  const { mutate: analyze, isPending, error } = useCreateAnalysis();
 
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -27,12 +27,14 @@ export function NewAnalysisPage() {
     if (!file || !jobText.trim()) return;
 
     const form = new FormData();
-    form.append("pdf_file", file);
-    form.append("job_text", jobText);
+    form.append("resume", file);
+    form.append("job_title", jobTitle || "Vaga não especificada");
+    form.append("job_description", jobText);
 
     analyze(form, {
       onSuccess: (res) => {
         saveFullSession({
+          analysisId: res.analysisId,
           score: res.match_score,
           gaps: res.gaps,
           summary: res.summary,

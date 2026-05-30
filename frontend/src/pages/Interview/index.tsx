@@ -1,6 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSession } from '../../store/session';
-import type { InterviewEvaluateResponse } from '../../lib/api';
+import {
+  useAnalysisInterviewQuestions,
+  useEvaluateInterviewAnswer,
+  type InterviewEvaluateResponse,
+} from '../../lib/api';
 
 declare global {
   interface Window {
@@ -16,13 +20,24 @@ const MOCK_QUESTIONS = [
 ];
 
 export function InterviewPage() {
-  const { jobTitle } = useSession();
+  const jobTitle = useSession((s) => s.jobTitle);
+  const analysisId = useSession((s) => s.analysisId);
+  const gaps = useSession((s) => s.gaps);
+  const gapSkills = gaps.map((g) => g.skill);
+
+  const { data: questionsData } = useAnalysisInterviewQuestions(analysisId);
+  const { mutate: evaluateAnswer } = useEvaluateInterviewAnswer(analysisId);
+
   const [isStarted, setIsStarted] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const question = MOCK_QUESTIONS[currentQuestionIndex];
+  const questions =
+    questionsData?.questions && questionsData.questions.length > 0
+      ? questionsData.questions
+      : MOCK_QUESTIONS;
+  const question = questions[currentQuestionIndex % questions.length];
   const [evaluation, setEvaluation] = useState<InterviewEvaluateResponse | null>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -59,7 +74,7 @@ export function InterviewPage() {
       recognitionRef.current.stop();
       setIsRecording(false);
       setIsEvaluating(true);
-      handleMockEvaluation();
+      handleEvaluate();
     } else {
       setTranscript('');
       setEvaluation(null);
@@ -68,22 +83,25 @@ export function InterviewPage() {
     }
   };
 
-  const handleMockEvaluation = () => {
-    setTimeout(() => {
-      setEvaluation({
-        score_1_5: 4,
-        strengths: ["Boa clareza na exposição do problema.", "Focou na resolução ativa em vez de culpar terceiros."],
-        improvements: ["Poderia ter detalhado melhor as métricas de sucesso financeiro ou de tempo."],
-        tip: "Lembre-se de usar o método STAR (Situação, Tarefa, Ação, Resultado) de forma mais explícita na próxima vez."
-      });
-      setIsEvaluating(false);
-    }, 2000); 
+  const handleEvaluate = () => {
+    evaluateAnswer(
+      { question, transcript, gaps: gapSkills },
+      {
+        onSuccess: (res) => {
+          setEvaluation(res);
+          setIsEvaluating(false);
+        },
+        onError: () => {
+          setIsEvaluating(false);
+        },
+      }
+    );
   };
 
   const handleNextQuestion = () => {
     setEvaluation(null);
     setTranscript('');
-    setCurrentQuestionIndex((prev) => (prev + 1) % MOCK_QUESTIONS.length);
+    setCurrentQuestionIndex((prev) => (prev + 1) % questions.length);
   };
 
   return (

@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import models.db_models  # noqa: F401 — registers SQLModel table metadata
 from core.database import create_db_and_tables
-from routers import analyze, interview, leetcode, pitch, roadmap
+from routers import analysis, context, interview
 
 
 @asynccontextmanager
@@ -24,10 +24,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(analyze.router)
-app.include_router(roadmap.router)
-app.include_router(leetcode.router)
-app.include_router(pitch.router)
+app.include_router(analysis.router)
+app.include_router(context.router)
 app.include_router(interview.router)
 
 

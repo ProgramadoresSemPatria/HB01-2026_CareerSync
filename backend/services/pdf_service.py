@@ -10,6 +10,9 @@ class PDFService:
             raise HTTPException(status_code=422, detail="Arquivo deve ser um PDF válido.")
 
         contents = await pdf_file.read()
+        return self.extract_from_bytes(contents)
+
+    def extract_from_bytes(self, contents: bytes) -> str:
         if not contents:
             raise HTTPException(status_code=422, detail="PDF enviado está vazio.")
 

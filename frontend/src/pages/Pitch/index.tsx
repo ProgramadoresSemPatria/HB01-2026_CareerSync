@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react';
-import { useGeneratePitch, type PitchCard } from '../../lib/api';
+import { useAnalysisPitch, type PitchCard } from '../../lib/api';
 import { useSession } from '../../store/session';
 
 const StarCard = ({ pitch }: { pitch: PitchCard }) => (
@@ -65,27 +64,10 @@ const StarCard = ({ pitch }: { pitch: PitchCard }) => (
 );
 
 export function PitchPage() {
-  const { jobTitle } = useSession();
-  const { mutate: generatePitch, data: pitches, isPending, isError } = useGeneratePitch();
-  
-  const hasAttemptedFetch = useRef(false);
-
-  useEffect(() => {
-    if (!pitches && !isPending && !hasAttemptedFetch.current) {
-      hasAttemptedFetch.current = true;
-      
-      generatePitch({
-        candidate_json: { 
-          role: "Desenvolvedor", 
-          experience: "Projetos em React, TypeScript e TailwindCSS" 
-        },
-        job_json: { 
-          title: jobTitle || "Vaga de Tecnologia", 
-          requirements: "Sólidos conhecimentos em frontend e arquitetura de software" 
-        }
-      });
-    }
-  }, [pitches, isPending, jobTitle, generatePitch]);
+  const jobTitle = useSession((s) => s.jobTitle);
+  const analysisId = useSession((s) => s.analysisId);
+  const { data: pitches, isLoading: isPending, isError } =
+    useAnalysisPitch(analysisId);
 
   return (
     <div className="w-full max-w-7xl mx-auto pb-12">
@@ -112,11 +94,8 @@ export function PitchPage() {
           <p className="text-gray-300 text-sm leading-relaxed mb-6">
             O nosso backend ainda não implementou a rota para a geração dos Pitches STAR. Quando a API estiver pronta, as narrativas aparecerão aqui.
           </p>
-          <button 
-            onClick={() => {
-              hasAttemptedFetch.current = false;
-              window.location.reload();
-            }}
+          <button
+            onClick={() => window.location.reload()}
             className="bg-[#202020] hover:bg-[#2a2a2a] border border-gray-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
           >
             Tentar Novamente
