@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export interface Gap {
+  id: string;
   skill: string;
   level: "critical" | "moderate";
   reason: string;
