@@ -72,8 +72,8 @@ export function AnalysisSummaryPage() {
   }, [matchScore, isNewAnalysis]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatStep, expanded]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [chatStep]); 
 
   if (matchScore === null) {
     return (
