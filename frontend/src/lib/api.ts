@@ -67,6 +67,47 @@ export interface LeetCodeEvaluateResponse {
   optimal_hint: string;
 }
 
+export interface ChallengeExample {
+  input: Record<string, unknown>;
+  expected: unknown;
+  explanation?: string | null;
+}
+
+export interface ChallengeSummary {
+  slug: string;
+  title: string;
+  difficulty: "Easy" | "Medium" | "Hard";
+  category: string;
+  reason: string;
+}
+
+export interface ChallengeDetail extends ChallengeSummary {
+  description: string;
+  function_name: string;
+  signature: string;
+  examples: ChallengeExample[];
+  constraints: string[];
+}
+
+export interface ChallengeTestFailure {
+  input: Record<string, unknown>;
+  expected: unknown;
+  actual: unknown;
+}
+
+export interface ChallengeSubmitResponse {
+  passed: boolean;
+  status: "passed" | "failed" | "error" | "timeout";
+  total_tests: number;
+  passed_count: number;
+  first_failure: ChallengeTestFailure | null;
+  error: string | null;
+}
+
+export interface ChallengeHintResponse {
+  hint: string;
+}
+
 export interface PitchCard {
   project: string;
   situation: string;
@@ -142,6 +183,56 @@ export function useAnalysisCodeChallenges(analysisId: string) {
     enabled: !!analysisId,
     retry: false,
     staleTime: Infinity,
+  });
+}
+
+export function useChallenges() {
+  return useQuery({
+    queryKey: ["challenges"],
+    queryFn: () => apiRequest<ChallengeSummary[]>(`${API}/challenges`),
+    retry: false,
+    staleTime: Infinity,
+  });
+}
+
+export function useChallenge(slug: string | null) {
+  return useQuery({
+    queryKey: ["challenge", slug],
+    queryFn: () =>
+      apiRequest<ChallengeDetail>(
+        `${API}/challenges/${encodeURIComponent(slug ?? "")}`,
+      ),
+    enabled: !!slug,
+    retry: false,
+    staleTime: Infinity,
+  });
+}
+
+export function useSubmitChallenge() {
+  return useMutation({
+    mutationFn: ({ slug, code }: { slug: string; code: string }) =>
+      apiRequest<ChallengeSubmitResponse>(
+        `${API}/challenges/${encodeURIComponent(slug)}/submit`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        },
+      ),
+  });
+}
+
+export function useChallengeHint() {
+  return useMutation({
+    mutationFn: ({ slug, code }: { slug: string; code: string }) =>
+      apiRequest<ChallengeHintResponse>(
+        `${API}/challenges/${encodeURIComponent(slug)}/hint`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        },
+      ),
   });
 }
 
