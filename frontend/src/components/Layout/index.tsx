@@ -103,18 +103,21 @@ export function Layout() {
         className={`fixed inset-y-0 left-0 z-50 bg-[#171717]/70 border-r border-gray-700 flex flex-col gap-6 shrink-0 transition-all duration-300 ease-in-out
           md:fixed md:translate-x-0 
           ${isSidebarOpen ? "translate-x-0 shadow-2xl w-full" : "-translate-x-full w-64"}
-          ${isDesktopCollapsed ? "md:w-20" : "md:w-64"}
+          ${isDesktopCollapsed ? "md:w-20" : "md:w-72"}
         `}
       >
         <div
-          className={`flex items-center h-16 px-5 ${isDesktopCollapsed ? "justify-center" : "justify-between"}`}
+          className={`flex items-start pt-4 h-16 px-5 ${isDesktopCollapsed ? "justify-center" : "justify-between"}`}
         >
           <div
-            className={`flex items-center overflow-hidden transition-all duration-300 ${isDesktopCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"}`}
+            className={`transition-all duration-300 ${isDesktopCollapsed ? "hidden" : "w-auto opacity-100"}`}
           >
             <h1 className="text-xl font-bold text-[#3ecf8e] whitespace-nowrap">
-              Prep AI
+              CareerSync
             </h1>
+            <span className="text-sm text-gray-400 whitespace-nowrap">
+              Sincronizando você e sua vaga!
+            </span>
           </div>
 
           <button
