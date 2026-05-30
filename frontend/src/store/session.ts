@@ -20,6 +20,7 @@ export interface RoadmapTask {
 
 export interface HistoryItem {
   sessionId: string;
+  analysisId: string;
   matchScore: number | null;
   summary: string;
   gaps: Gap[];
@@ -31,6 +32,7 @@ export interface HistoryItem {
 
 interface SessionState {
   sessionId: string;
+  analysisId: string;
   matchScore: number | null;
   summary: string;
   gaps: Gap[];
@@ -42,12 +44,14 @@ interface SessionState {
   history: HistoryItem[];
 
   setAnalysis: (score: number, gaps: Gap[], summary: string) => void;
+  setAnalysisId: (id: string) => void;
   setJobTitle: (title: string) => void;
   setJobDescription: (desc: string) => void;
   setFileName: (name: string) => void;
   setRoadmap: (tasks: RoadmapTask[]) => void;
 
   saveFullSession: (data: {
+    analysisId: string;
     score: number;
     gaps: Gap[];
     summary: string;
@@ -63,6 +67,7 @@ export const useSession = create<SessionState>()(
   persist(
     (set) => ({
       sessionId: crypto.randomUUID(),
+      analysisId: "",
       matchScore: null,
       summary: "",
       gaps: [],
@@ -74,6 +79,7 @@ export const useSession = create<SessionState>()(
 
       setAnalysis: (score, gaps, summary) =>
         set({ matchScore: score, gaps, summary }),
+      setAnalysisId: (id) => set({ analysisId: id }),
       setJobTitle: (title) => set({ jobTitle: title }),
       setJobDescription: (desc) => set({ jobDescription: desc }),
       setFileName: (name) => set({ fileName: name }),
@@ -93,6 +99,7 @@ export const useSession = create<SessionState>()(
         set((state) => {
           const newHistoryItem: HistoryItem = {
             sessionId: state.sessionId,
+            analysisId: data.analysisId,
             matchScore: data.score,
             gaps: data.gaps,
             summary: data.summary,
@@ -114,6 +121,7 @@ export const useSession = create<SessionState>()(
             : [newHistoryItem, ...historyList];
 
           return {
+            analysisId: data.analysisId,
             matchScore: data.score,
             gaps: data.gaps,
             summary: data.summary,
@@ -131,6 +139,7 @@ export const useSession = create<SessionState>()(
           if (!target) return {};
           return {
             sessionId: target.sessionId,
+            analysisId: target.analysisId,
             matchScore: target.matchScore,
             summary: target.summary,
             gaps: target.gaps,
@@ -147,6 +156,7 @@ export const useSession = create<SessionState>()(
           useProgress.getState().resetProgress(prevSessionId);
           return {
             sessionId: crypto.randomUUID(),
+            analysisId: "",
             matchScore: null,
             summary: "",
             gaps: [],

@@ -86,6 +86,102 @@ export function useAnalyze() {
   });
 }
 
+// ── Novo contrato /analysis ───────────────────────────────────────────────────
+
+export interface AnalysisResult extends AnalyzeResponse {
+  analysisId: string;
+}
+
+/**
+ * Cria a análise (POST /analysis → analysis_id) e em seguida busca o summary
+ * (GET /analysis/{id}/summary, que dispara a LLM no backend). Combina os dois
+ * passos num único fluxo para a tela de Nova Análise.
+ */
+export function useCreateAnalysis() {
+  return useMutation({
+    mutationFn: async (form: FormData): Promise<AnalysisResult> => {
+      const { analysis_id } = await apiRequest<{ analysis_id: string }>(
+        `${API}/analysis`,
+        { method: "POST", body: form }
+      );
+      const summary = await apiRequest<AnalyzeResponse>(
+        `${API}/analysis/${analysis_id}/summary`
+      );
+      return { analysisId: analysis_id, ...summary };
+    },
+  });
+}
+
+/**
+ * Busca o roadmap da análise. O backend gera sob demanda na primeira chamada
+ * (cache-or-generate) e devolve do cache nas seguintes.
+ */
+export function useAnalysisRoadmap(analysisId: string) {
+  return useQuery({
+    queryKey: ["analysis-roadmap", analysisId],
+    queryFn: () =>
+      apiRequest<RoadmapTask[]>(`${API}/analysis/${analysisId}/roadmap`),
+    enabled: !!analysisId,
+    retry: false,
+    staleTime: Infinity,
+  });
+}
+
+export function useAnalysisCodeChallenges(analysisId: string) {
+  return useQuery({
+    queryKey: ["analysis-code-challenges", analysisId],
+    queryFn: () =>
+      apiRequest<LeetCodeProblem[]>(
+        `${API}/analysis/${analysisId}/code-challenges`
+      ),
+    enabled: !!analysisId,
+    retry: false,
+    staleTime: Infinity,
+  });
+}
+
+export function useAnalysisPitch(analysisId: string) {
+  return useQuery({
+    queryKey: ["analysis-pitch", analysisId],
+    queryFn: () =>
+      apiRequest<PitchCard[]>(`${API}/analysis/${analysisId}/pitch`),
+    enabled: !!analysisId,
+    retry: false,
+    staleTime: Infinity,
+  });
+}
+
+export function useAnalysisInterviewQuestions(analysisId: string) {
+  return useQuery({
+    queryKey: ["analysis-interview-questions", analysisId],
+    queryFn: () =>
+      apiRequest<{ questions: string[] }>(
+        `${API}/analysis/${analysisId}/interview-questions`
+      ),
+    enabled: !!analysisId,
+    retry: false,
+    staleTime: Infinity,
+  });
+}
+
+export function useEvaluateInterviewAnswer(analysisId: string) {
+  return useMutation({
+    mutationFn: (body: {
+      question: string;
+      transcript: string;
+      gaps: string[];
+    }) =>
+      apiRequest<InterviewEvaluateResponse>(
+        `${API}/analysis/${analysisId}/evaluate-interview-answer`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      ),
+  });
+}
+
 export function useGenerateRoadmap() {
   return useMutation({
     mutationFn: (body: { session_id: string; gaps: Gap[]; job_title: string }) =>
@@ -130,13 +226,14 @@ export function useLeetCodeProblems(stack: string, seniority: string, gaps: stri
 export function useEvaluateSolution() {
   return useMutation({
     mutationFn: (body: {
+      analysis_id: string;
       slug: string;
       title: string;
       description: string;
       solution: string;
       language: string;
     }) =>
-      apiRequest<LeetCodeEvaluateResponse>(`${API}/leetcode/evaluate`, {
+      apiRequest<LeetCodeEvaluateResponse>(`${API}/evaluate-solution`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

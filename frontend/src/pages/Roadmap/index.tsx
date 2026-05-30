@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { RoadmapDaysView } from "../../components/RoadmapDaysView";
 import { RoadmapProgressBar } from "../../components/RoadmapProgressBar";
-import { useGenerateRoadmap, useGetRoadmap } from "../../lib/api";
+import { useAnalysisRoadmap } from "../../lib/api";
 import {
   countCompletedDays,
   groupByDay,
@@ -17,8 +17,7 @@ const CHALLENGE_CTA_THRESHOLD = 5;
 export function RoadmapPage() {
   const navigate = useNavigate();
   const sessionId = useSession((s) => s.sessionId);
-  const gaps = useSession((s) => s.gaps);
-  const jobTitle = useSession((s) => s.jobTitle);
+  const analysisId = useSession((s) => s.analysisId);
   const roadmap = useSession((s) => s.roadmap);
   const setRoadmap = useSession((s) => s.setRoadmap);
 
@@ -34,44 +33,16 @@ export function RoadmapPage() {
     data: fetchedRoadmap,
     isLoading: isFetching,
     error: fetchError,
-  } = useGetRoadmap(sessionId);
+    refetch,
+  } = useAnalysisRoadmap(analysisId);
 
-  const {
-    mutate: generateRoadmap,
-    isPending: isGenerating,
-    error: generateError,
-  } = useGenerateRoadmap();
-
+  // O backend é a fonte de verdade: ao receber o roadmap, sincroniza no store
+  // (alimenta a barra de progresso e o histórico).
   useEffect(() => {
-    if (fetchedRoadmap && fetchedRoadmap.length > 0 && roadmap.length === 0) {
+    if (fetchedRoadmap && fetchedRoadmap.length > 0) {
       setRoadmap(fetchedRoadmap);
     }
-  }, [fetchedRoadmap, roadmap.length, setRoadmap]);
-
-  useEffect(() => {
-    if (
-      !isFetching &&
-      fetchError &&
-      roadmap.length === 0 &&
-      gaps.length > 0 &&
-      !isGenerating
-    ) {
-      generateRoadmap(
-        { session_id: sessionId, gaps, job_title: jobTitle || "Vaga" },
-        { onSuccess: (tasks) => setRoadmap(tasks) }
-      );
-    }
-  }, [
-    fetchError,
-    isFetching,
-    roadmap.length,
-    gaps,
-    jobTitle,
-    sessionId,
-    isGenerating,
-    generateRoadmap,
-    setRoadmap,
-  ]);
+  }, [fetchedRoadmap, setRoadmap]);
 
   const tasksByDay = useMemo(() => groupByDay(roadmap), [roadmap]);
   const completedDays = useMemo(
@@ -87,18 +58,9 @@ export function RoadmapPage() {
     navigate(`/context/${encodeURIComponent(gapId)}`);
   }
 
-  function retryGenerate() {
-    generateRoadmap(
-      { session_id: sessionId, gaps, job_title: jobTitle || "Vaga" },
-      { onSuccess: (tasks) => setRoadmap(tasks) }
-    );
-  }
-
-  const isLoading = (isFetching && roadmap.length === 0) || isGenerating;
-  const showError =
-    !isLoading && roadmap.length === 0 && generateError && gaps.length > 0;
-  const showEmpty =
-    !isLoading && roadmap.length === 0 && gaps.length === 0;
+  const isLoading = isFetching && roadmap.length === 0;
+  const showError = !isLoading && roadmap.length === 0 && !!fetchError && !!analysisId;
+  const showEmpty = !analysisId;
 
   const showChallengeCta = completedDays >= CHALLENGE_CTA_THRESHOLD;
   const isFullyComplete = completedDays === TOTAL_DAYS;
@@ -116,19 +78,17 @@ export function RoadmapPage() {
 
       {isLoading && (
         <div className="bg-[#202020] rounded-xl border border-gray-700 p-8 text-center">
-          <p className="text-gray-400">
-            {isGenerating ? "Gerando seu roadmap..." : "Carregando..."}
-          </p>
+          <p className="text-gray-400">Gerando seu roadmap...</p>
         </div>
       )}
 
       {showError && (
         <div className="bg-red-500/10 rounded-xl border border-red-500/20 p-6 flex flex-col gap-3">
           <p className="text-red-400 text-sm">
-            {(generateError as Error).message}
+            {(fetchError as Error).message}
           </p>
           <button
-            onClick={retryGenerate}
+            onClick={() => refetch()}
             className="self-start bg-[#3ecf8e] text-[#171717] text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#3ecf8e]/90 transition"
           >
             Tentar novamente

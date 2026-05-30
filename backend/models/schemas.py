@@ -19,6 +19,33 @@ class AnalyzeResponse(BaseModel):
     summary: str
 
 
+# ── Analysis (novo contrato) ──────────────────────────────────────────────────
+
+class AnalysisCreateResponse(BaseModel):
+    analysis_id: str
+
+
+class AnalysisDetailResponse(BaseModel):
+    job_title: str
+    job_description: str
+    resume: str  # PDF original codificado em base64
+
+
+class EvaluateSolutionRequest(BaseModel):
+    analysis_id: str
+    slug: str
+    title: str
+    description: str
+    solution: str
+    language: str
+
+
+class EvaluateInterviewAnswerRequest(BaseModel):
+    question: str
+    transcript: str
+    gaps: list[str]
+
+
 # ── Roadmap ───────────────────────────────────────────────────────────────────
 
 class RoadmapRequest(BaseModel):

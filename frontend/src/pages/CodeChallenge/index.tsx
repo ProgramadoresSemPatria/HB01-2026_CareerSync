@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  useLeetCodeProblems,
+  useAnalysisCodeChallenges,
   useEvaluateSolution,
   type LeetCodeProblem,
 } from "../../lib/api";
@@ -51,19 +51,10 @@ const ProblemCard = ({
 );
 
 export function CodeChallengePage() {
-  const { gaps, jobTitle } = useSession();
+  const analysisId = useSession((s) => s.analysisId);
 
-  const stack = "React, TypeScript";
-  const seniority = jobTitle || "Pleno";
-  const gapsString = gaps
-    .map((g) => (typeof g === "string" ? g : g.skill))
-    .join(", ");
-
-  const { data: problems, isLoading: isLoadingProblems } = useLeetCodeProblems(
-    stack,
-    seniority,
-    gapsString,
-  );
+  const { data: problems, isLoading: isLoadingProblems } =
+    useAnalysisCodeChallenges(analysisId);
   const {
     mutate: evaluateSolution,
     data: evaluation,
@@ -78,6 +69,7 @@ export function CodeChallengePage() {
     if (!selectedProblem || !solutionCode.trim()) return;
 
     evaluateSolution({
+      analysis_id: analysisId,
       slug: selectedProblem.slug,
       title: selectedProblem.title,
       description: selectedProblem.category,
