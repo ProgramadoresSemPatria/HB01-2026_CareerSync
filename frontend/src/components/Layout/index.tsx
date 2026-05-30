@@ -6,6 +6,10 @@ import {
   SquarePen,
   MoreVertical,
   ScrollText,
+  Menu,
+  X,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { useState } from "react";
 import type { ReactNode } from "react";
@@ -76,20 +80,7 @@ export function Layout() {
         onClick={() => setIsSidebarOpen(true)}
         className="md:hidden fixed top-4 left-4 z-40 w-12 h-12 bg-[#202020] text-[#3ecf8e] rounded-full flex items-center justify-center shadow-lg border border-gray-700 hover:bg-gray-800 transition-colors"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
+        <Menu />
       </button>
 
       {isSidebarOpen && (
@@ -125,40 +116,14 @@ export function Layout() {
             className="hidden md:flex text-gray-400 hover:text-white transition-colors p-1.5 rounded-md hover:bg-white/10"
             title={isDesktopCollapsed ? "Expandir menu" : "Recolher menu"}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
-              />
-            </svg>
+            {isDesktopCollapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
           </button>
 
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="md:hidden text-gray-400 hover:text-white transition-colors p-1"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <X />
           </button>
         </div>
 
