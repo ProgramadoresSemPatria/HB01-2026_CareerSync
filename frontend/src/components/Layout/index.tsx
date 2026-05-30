@@ -29,11 +29,6 @@ const NAVIGATION_ICONS_SIZE = {
 
 const NAVIGATION_ITEMS: NavigationItem[] = [
   {
-    label: "Nova análise",
-    to: "/new",
-    icon: <SquarePen {...NAVIGATION_ICONS_SIZE} />,
-  },
-  {
     label: "Resumo da análise",
     to: "/summary",
     icon: <ScrollText {...NAVIGATION_ICONS_SIZE} />,
@@ -128,6 +123,32 @@ export function Layout() {
         </div>
 
         <nav className="flex flex-col gap-1 px-3">
+          <NavLink
+            key={"/new"}
+            to={"/new"}
+            onClick={() => {
+              setIsSidebarOpen(false);
+              resetSession();
+            }}
+            title={isDesktopCollapsed ? "Nova análise" : undefined}
+            className={({ isActive }) =>
+              `${baseLinkStyle} ${isActive ? activeLinkStyle : inactiveLinkStyle} ${isDesktopCollapsed ? "justify-center px-0" : "px-3"}`
+            }
+          >
+            <span className="shrink-0">
+              <SquarePen {...NAVIGATION_ICONS_SIZE} />
+            </span>
+            <span
+              className={`ml-3 whitespace-nowrap transition-all duration-300 overflow-hidden ${isDesktopCollapsed ? "w-0 ml-0 opacity-0" : "w-auto opacity-100"}`}
+            >
+              Nova análise
+            </span>
+          </NavLink>
+
+          <h2 className="mt-2 mb-1 text-xs px-2 font-semibold text-[#9a9a9a] uppercase tracking-wider">
+            Sua preparação
+          </h2>
+
           {NAVIGATION_ITEMS.map((item) => (
             <NavLink
               key={item.to}
