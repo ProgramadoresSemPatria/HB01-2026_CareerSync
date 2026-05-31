@@ -28,7 +28,6 @@ export default function LandingPage() {
         />
         <meta property="og:type" content="website" />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://careersync.app/" />
       </Helmet>
 
       <LandingHeader />
