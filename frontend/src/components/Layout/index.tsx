@@ -143,7 +143,7 @@ export function Layout() {
               <SquarePen {...NAVIGATION_ICONS_SIZE} />
             </span>
             <span
-              className={`ml-3 whitespace-nowrap transition-all duration-300 overflow-hidden ${isDesktopCollapsed ? "w-0 ml-0 opacity-0" : "w-auto opacity-100"}`}
+              className={`whitespace-nowrap transition-all duration-300 overflow-hidden ${isDesktopCollapsed ? "w-0 opacity-0" : "ml-3 w-auto opacity-100"}`}
             >
               Nova análise
             </span>
@@ -188,7 +188,7 @@ export function Layout() {
               >
                 <span className="shrink-0">{item.icon}</span>
                 <span
-                  className={`ml-3 whitespace-nowrap transition-all duration-300 overflow-hidden ${isDesktopCollapsed ? "w-0 ml-0 opacity-0" : "w-auto opacity-100"}`}
+                  className={`whitespace-nowrap transition-all duration-300 overflow-hidden ${isDesktopCollapsed ? "w-0 opacity-0" : "ml-3 w-auto opacity-100"}`}
                 >
                   {item.label}
                 </span>
