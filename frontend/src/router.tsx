@@ -5,7 +5,6 @@ import { ContextPage } from "./pages/Context";
 import { InterviewPage } from "./pages/Interview";
 import { CodeChallengePage } from "./pages/CodeChallenge";
 import { PitchPage } from "./pages/Pitch";
-import { StrategicQuestionsPage } from "./pages/StrategicQuestions";
 import { RoadmapPage } from "./pages/Roadmap";
 import { NewAnalysisPage } from "./pages/NewAnalysis";
 import { AnalysisSummaryPage } from "./pages/AnalysisSummary";
@@ -78,15 +77,6 @@ export function AppRouter() {
             element={
               <RequireAnalysis>
                 <InterviewPage />
-              </RequireAnalysis>
-            }
-          />
-
-          <Route
-            path="/strategic-questions"
-            element={
-              <RequireAnalysis>
-                <StrategicQuestionsPage />
               </RequireAnalysis>
             }
           />
