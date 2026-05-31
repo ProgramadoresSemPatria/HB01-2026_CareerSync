@@ -576,7 +576,7 @@ export function InterviewPage() {
              </div>
             <h3 className="text-white font-bold text-lg mb-2">Simulador de Áudio Nativo</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
-              O PrepOS usará o microfone do seu navegador para transcrever sua fala em tempo real (Speech-to-Text). Clique em "Iniciar Sessão" no topo para permitir o acesso.
+              O CareerSync usará o microfone do seu navegador para transcrever sua fala em tempo real (Speech-to-Text). Clique em "Iniciar Sessão" no topo para permitir o acesso.
             </p>
           </div>
         </div>
