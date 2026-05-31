@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useSession } from "../../store/session";
 
 interface NavigationItem {
@@ -59,6 +59,7 @@ export function Layout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const navigate = useNavigate();
   const resetSession = useSession((s) => s.reset);
   const history = useSession((s) => s.history) || [];
   const currentSessionId = useSession((s) => s.sessionId);
@@ -254,6 +255,11 @@ export function Layout() {
                                 }));
 
                                 setOpenMenuId(null);
+                                
+                                if (s.sessionId === currentSessionId) {
+                                  resetSession();
+                                  navigate("/new");
+                                }
                               }}
                               className="w-full px-2 py-1 text-xs text-red-400 hover:bg-red-500/10 rounded transition-colors font-medium"
                             >
