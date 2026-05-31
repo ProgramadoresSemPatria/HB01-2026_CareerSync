@@ -122,7 +122,8 @@ Retorne SOMENTE um JSON válido com esta estrutura exata (objeto com chave "card
       "action": "<ações tomadas pelo candidato, 2-3 frases>",
       "result": "<resultado mensurável alcançado, 1-2 frases>",
       "vaga_connection": "<como essa experiência se conecta com a vaga alvo, 1 frase>",
-      "relevance": "<por que esse pitch é relevante para essa entrevista, 1 frase>"
+      "relevance": "<por que esse pitch é relevante para essa entrevista, 1 frase>",
+      "relevance_level": "alta" | "media"
     }
   ]
 }
@@ -130,6 +131,8 @@ Retorne SOMENTE um JSON válido com esta estrutura exata (objeto com chave "card
 Regras:
 - Gerar entre 3 e 5 cartões STAR
 - Basear-se apenas em experiências reais do candidato
+- relevance_level reflete o quanto o projeto é relevante para a vaga alvo:
+  "alta" quando há forte aderência com os requisitos da vaga, "media" caso contrário
 - Nenhum texto fora do JSON
 """
 

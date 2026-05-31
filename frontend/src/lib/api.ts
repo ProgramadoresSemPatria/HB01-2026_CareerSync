@@ -75,6 +75,7 @@ export interface PitchCard {
   result: string;
   vaga_connection: string;
   relevance: string;
+  relevance_level: "alta" | "media";
 }
 
 export interface StrategicQuestion {
