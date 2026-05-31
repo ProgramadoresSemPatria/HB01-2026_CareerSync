@@ -55,16 +55,9 @@ export interface LeetCodeProblem {
   title: string;
   difficulty: "Easy" | "Medium" | "Hard";
   category: string;
+  url: string;
+  description: string;
   reason: string;
-}
-
-export interface LeetCodeEvaluateResponse {
-  correct: boolean;
-  time_complexity: string;
-  space_complexity: string;
-  strengths: string[];
-  improvements: string[];
-  optimal_hint: string;
 }
 
 export interface PitchCard {
@@ -101,6 +94,7 @@ async function apiRequest<T>(url: string, init?: RequestInit): Promise<T> {
 }
 
 export function useCreateAnalysis() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (form: FormData): Promise<AnalysisResult> => {
       const { analysis_id } = await apiRequest<AnalysisCreateResponse>(
@@ -111,6 +105,17 @@ export function useCreateAnalysis() {
         `${API}/analysis/${encodeURIComponent(analysis_id)}/summary`,
       );
       return { analysisId: analysis_id, ...summary };
+    },
+    onSuccess: ({ analysisId }) => {
+      // Gera/cacheia as recomendações logo após o match — página fica instantânea.
+      // Non-blocking: a página ainda funciona standalone se o prefetch falhar.
+      void queryClient.prefetchQuery({
+        queryKey: ["analysis-code-challenges", analysisId],
+        queryFn: () =>
+          apiRequest<LeetCodeProblem[]>(
+            `${API}/analysis/${encodeURIComponent(analysisId)}/code-challenges`,
+          ),
+      });
     },
   });
 }
@@ -231,23 +236,5 @@ export function useContext(gapId: string) {
     queryFn: () => apiRequest<ContextResponse>(`${API}/context/${encodeURIComponent(gapId)}`),
     staleTime: Infinity,
     enabled: !!gapId,
-  });
-}
-
-export function useEvaluateSolution() {
-  return useMutation({
-    mutationFn: (body: {
-      analysis_id: string;
-      slug: string;
-      title: string;
-      description: string;
-      solution: string;
-      language: string;
-    }) =>
-      apiRequest<LeetCodeEvaluateResponse>(`${API}/evaluate-solution`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }),
   });
 }
