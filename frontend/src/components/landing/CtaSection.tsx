@@ -37,7 +37,7 @@ export default function CtaSection() {
             href="/new"
             className="inline-block bg-primary-500 text-black px-5 py-3 rounded-md font-semibold hover:bg-primary-600 transition-colors"
           >
-            Criar minha conta grátis
+            Fazer uma análise gratuita
           </a>
         </AnimatedSection>
 
