@@ -45,7 +45,8 @@ export default function FeaturesSection() {
           duration={400}
           className="mb-2"
         >
-          <div className="inline-block bg-primary-500/10 text-primary-700 px-3 py-1 rounded-full text-sm">
+          <div className="label-mono inline-flex items-center gap-2 text-primary-500">
+            <span className="h-px w-6 bg-primary-500/50" />
             Funcionalidades
           </div>
         </AnimatedSection>
@@ -56,13 +57,13 @@ export default function FeaturesSection() {
           duration={500}
           className="mb-2"
         >
-          <h2 className="text-2xl font-semibold text-white">
+          <h2 className="font-display text-4xl text-white sm:text-5xl">
             Tudo que você precisa para se destacar
           </h2>
         </AnimatedSection>
 
         <AnimatedSection animation="fade-up" delay={200} duration={500}>
-          <p className="text-neutral-300 mt-2">
+          <p className="mx-auto mt-3 max-w-xl text-white/55">
             Do upload do currículo ao simulador de entrevista — em uma única
             plataforma.
           </p>

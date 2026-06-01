@@ -3,6 +3,11 @@ export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Hanken Grotesk"', "system-ui", "sans-serif"],
+        display: ['"Instrument Serif"', "Georgia", "serif"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
+      },
       colors: {
         primary: {
           500: "#3ecf8e",
@@ -28,6 +33,35 @@ export default {
       },
       borderRadius: {
         lg: "12px",
+      },
+      keyframes: {
+        "rise-in": {
+          "0%": { opacity: "0", transform: "translateY(24px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { opacity: "0.5" },
+          "50%": { opacity: "0.85" },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        "rise-in": "rise-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "fade-in": "fade-in 1s ease both",
+        float: "float 6s ease-in-out infinite",
+        "glow-pulse": "glow-pulse 5s ease-in-out infinite",
+        marquee: "marquee 30s linear infinite",
       },
     },
   },

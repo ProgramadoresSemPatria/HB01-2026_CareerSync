@@ -32,24 +32,100 @@ html {
 @layer components {
   /* Botão primário padrão da landing — cor + micro-interações consistentes */
   .btn-primary {
-    @apply bg-primary-500 text-black font-semibold rounded-md
+    @apply inline-flex items-center justify-center gap-2
+      bg-primary-500 text-black font-semibold rounded-md
       transition-all duration-200
-      hover:bg-primary-600 hover:shadow-lg hover:shadow-primary-500/20
+      hover:bg-primary-600 hover:shadow-[0_8px_30px_-6px_rgba(62,207,142,0.5)]
       active:scale-[0.98]
       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60
-      focus-visible:ring-offset-2 focus-visible:ring-offset-[#171717];
+      focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0d0d];
+  }
+
+  /* Botão secundário — contorno discreto */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+      border border-white/15 text-white/90 rounded-md
+      transition-all duration-200
+      hover:border-primary-500/50 hover:text-primary-500 hover:bg-primary-500/5
+      active:scale-[0.98]
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20
+      focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0d0d];
   }
 }
 
 body {
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial;
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
   background-color: var(--bg);
   color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@layer components {
+  /* Display editorial — títulos com personalidade */
+  .font-display {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  /* Rótulo "terminal" — caps mono espaçado */
+  .label-mono {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.7rem;
+  }
+}
+
+@layer utilities {
+  /* Grade blueprint sutil de fundo */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(62, 207, 142, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(62, 207, 142, 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Textura de grão para tirar o "liso digital" */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  }
+
+  /* Brilho fosforescente em torno de elementos */
+  .glow-primary {
+    box-shadow:
+      0 0 0 1px rgba(62, 207, 142, 0.2),
+      0 12px 40px -12px rgba(62, 207, 142, 0.35);
+  }
+
+  /* Máscara de fade nas bordas (marquee/scroll) */
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+  }
+}
+
+/* Respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
