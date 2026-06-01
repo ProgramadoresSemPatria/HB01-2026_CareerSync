@@ -30,6 +30,6 @@ export const useProgress = create<ProgressState>()(
           return { bySession: rest };
         }),
     }),
-    { name: "prep-ai-progress" }
+    { name: "career-sync-progress" }
   )
 );

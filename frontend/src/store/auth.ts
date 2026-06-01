@@ -22,7 +22,7 @@ export const useAuth = create<AuthState>()(
       logout: () => set({ token: null, user: null }),
     }),
     {
-      name: "prep-ai-auth",
+      name: "career-sync-auth",
       storage: createJSONStorage(() => localStorage),
     },
   ),

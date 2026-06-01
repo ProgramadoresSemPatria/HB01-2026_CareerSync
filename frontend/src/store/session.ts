@@ -178,7 +178,7 @@ export const useSession = create<SessionState>()(
         }),
     }),
     {
-      name: "prep-ai-session",
+      name: "career-sync-session",
       storage: createJSONStorage(() => localStorage),
       partialize: (state): PersistedSessionState => {
         const { history, ...persistedState } = state;
