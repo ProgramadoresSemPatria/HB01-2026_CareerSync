@@ -8,11 +8,7 @@ import { RoadmapProgressBar } from "../../components/RoadmapProgressBar";
 import { RoadmapSkeleton } from "../../components/Skeletons";
 import { useAnalysisRoadmap } from "../../lib/api";
 import { buildRoadmapIcs, buildRoadmapPlainText } from "../../lib/ics";
-import {
-  countCompletedDays,
-  groupByDay,
-  TOTAL_DAYS,
-} from "../../lib/roadmap";
+import { countCompletedDays, groupByDay, TOTAL_DAYS } from "../../lib/roadmap";
 import { useProgress } from "../../store/progress";
 import { useSession } from "../../store/session";
 
@@ -70,7 +66,7 @@ export function RoadmapPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "roadmap-prepos.ics";
+      a.download = "roadmap-careersync.ics";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -82,7 +78,9 @@ export function RoadmapPage() {
         await navigator.clipboard.writeText(
           buildRoadmapPlainText(tasksByDay, gaps),
         );
-        setExportFeedback("Download indisponível — roadmap copiado para a área de transferência");
+        setExportFeedback(
+          "Download indisponível — roadmap copiado para a área de transferência",
+        );
       } catch {
         setExportFeedback("Não foi possível exportar o calendário");
       }
