@@ -55,7 +55,7 @@ export function buildRoadmapIcs(
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//PrepOS//Roadmap//PT-BR",
+    "PRODID:-//CareerSync//Roadmap//PT-BR",
     "CALSCALE:GREGORIAN",
   ];
 
@@ -84,7 +84,7 @@ export function buildRoadmapIcs(
 
     lines.push(
       "BEGIN:VEVENT",
-      `UID:prepos-roadmap-dia${day}-${now.getTime()}@prepos`,
+      `UID:careersync-roadmap-dia${day}-${now.getTime()}@careersync`,
       `DTSTAMP:${stamp}`,
       `DTSTART:${formatLocalDateTime(start)}`,
       `DTEND:${formatLocalDateTime(end)}`,
@@ -107,7 +107,7 @@ export function buildRoadmapPlainText(
   gaps: Gap[],
 ): string {
   const gapById = new Map(gaps.map((g) => [g.id, g]));
-  const lines: string[] = ["Roadmap de Estudo (7 dias) — PrepOS", ""];
+  const lines: string[] = ["Roadmap de Estudo (7 dias) — CareerSync", ""];
 
   for (let day = 1; day <= TOTAL_DAYS; day++) {
     const dayTasks = tasksByDay.get(day) ?? [];

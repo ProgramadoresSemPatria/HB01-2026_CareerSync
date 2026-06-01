@@ -8,11 +8,7 @@ import { RoadmapProgressBar } from "../../components/RoadmapProgressBar";
 import { RoadmapSkeleton } from "../../components/Skeletons";
 import { useAnalysisRoadmap } from "../../lib/api";
 import { buildRoadmapIcs, buildRoadmapPlainText } from "../../lib/ics";
-import {
-  countCompletedDays,
-  groupByDay,
-  TOTAL_DAYS,
-} from "../../lib/roadmap";
+import { countCompletedDays, groupByDay, TOTAL_DAYS } from "../../lib/roadmap";
 import { useProgress } from "../../store/progress";
 import { useSession } from "../../store/session";
 
@@ -60,7 +56,7 @@ export function RoadmapPage() {
   }
 
   function handleViewContext(gapId: string) {
-    navigate(`/context/${encodeURIComponent(gapId)}`);
+    navigate(`/analysis/${analysisId}/context/${encodeURIComponent(gapId)}`);
   }
 
   async function handleExportCalendar() {
@@ -70,7 +66,7 @@ export function RoadmapPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "roadmap-prepos.ics";
+      a.download = "roadmap-careersync.ics";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -82,7 +78,9 @@ export function RoadmapPage() {
         await navigator.clipboard.writeText(
           buildRoadmapPlainText(tasksByDay, gaps),
         );
-        setExportFeedback("Download indisponível — roadmap copiado para a área de transferência");
+        setExportFeedback(
+          "Download indisponível — roadmap copiado para a área de transferência",
+        );
       } catch {
         setExportFeedback("Não foi possível exportar o calendário");
       }
@@ -139,7 +137,7 @@ export function RoadmapPage() {
           title="Nenhum roadmap disponível"
           description="A análise não gerou tarefas de estudo. Refaça a análise para tentar novamente."
           ctaLabel="Voltar para análise"
-          onCta={() => navigate("/summary")}
+          onCta={() => navigate(`/analysis/${analysisId}/summary`)}
         />
       )}
 
@@ -177,7 +175,7 @@ export function RoadmapPage() {
 
           {showChallengeCta && (
             <button
-              onClick={() => navigate("/code-challenge")}
+              onClick={() => navigate(`/analysis/${analysisId}/code-challenge`)}
               className="bg-[#3ecf8e] text-[#171717] font-semibold py-3 rounded-xl hover:bg-[#3ecf8e]/90 transition mt-2"
             >
               {isFullyComplete

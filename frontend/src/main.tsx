@@ -1,3 +1,4 @@
+import { HelmetProvider } from "react-helmet-async";
 import {
   MutationCache,
   QueryCache,
@@ -38,7 +39,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <AppRouter />
+        <HelmetProvider>
+          <AppRouter />
+        </HelmetProvider>
         <Toaster
           position="top-right"
           toastOptions={{
