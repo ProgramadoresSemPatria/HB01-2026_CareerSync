@@ -1,32 +1,53 @@
+const days = [
+  "Algoritmos & estruturas de dados",
+  "Desafios técnicos sugeridos pela IA",
+  "Simulador de entrevista + feedback",
+  "Revisão dos gaps prioritários",
+];
+
 export default function HeroMockup() {
   return (
-    <div className="overflow-hidden w-full lg:max-w-sm mx-auto bg-[#202020] border border-neutral-700 rounded-lg shadow-md p-6 transform -rotate-1">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="text-sm text-neutral-300">Match Score</div>
-          <div className="text-3xl font-bold text-primary-500">87%</div>
-        </div>
-        <div className="text-right text-sm text-neutral-300">Plano 7 dias</div>
+    <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-[#0d0d0d] glow-primary">
+      {/* Barra de janela estilo terminal */}
+      <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.02] px-4 py-3">
+        <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+        <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+        <span className="h-2.5 w-2.5 rounded-full bg-primary-500/70" />
+        <span className="label-mono ml-2 text-white/40">careersync ~ plano</span>
       </div>
 
-      <div className="w-full mt-4 h-36 bg-[#202020] border border-neutral-700 rounded-md overflow-hidden p-4 text-sm text-white">
-        <div className="overflow-hidden w-full">
-          <p className="truncate mb-1">
-            <b>Dia 1:</b> Estudar conceitos básicos de algoritmos e estruturas
-            de dados.
-          </p>
-          <p className="truncate mb-1">
-            <b>Dia 2:</b> Resolver os desafios técnicos sugeridos pela IA.
-          </p>
-          <p className="truncate mb-1">
-            <b>Dia 3:</b> Participar do simulador de entrevista e receber
-            feedback.
-          </p>
-          <p className="truncate mb-1">
-            <b>Dia 4:</b> Revisar os gaps identificados e focar nos pontos
-            fracos.
-          </p>
-          <p className="truncate mb-1">...</p>
+      <div className="p-5">
+        {/* Match score */}
+        <div className="flex items-end justify-between">
+          <div>
+            <div className="label-mono text-white/40">match score</div>
+            <div className="font-display text-5xl leading-none text-primary-500">
+              87%
+            </div>
+          </div>
+          <div className="label-mono text-right text-white/40">
+            plano
+            <br />
+            <span className="text-white/70">7 dias</span>
+          </div>
+        </div>
+
+        {/* Barra de progresso */}
+        <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+          <div className="h-full w-[87%] rounded-full bg-gradient-to-r from-primary-600 to-primary-500" />
+        </div>
+
+        {/* Lista de dias */}
+        <div className="mt-5 space-y-2.5">
+          {days.map((label, i) => (
+            <div key={label} className="flex items-center gap-3 text-sm">
+              <span className="label-mono w-8 shrink-0 text-primary-500/80">
+                D{i + 1}
+              </span>
+              <span className="truncate text-white/70">{label}</span>
+            </div>
+          ))}
+          <div className="label-mono pl-11 text-white/30">+ 3 dias…</div>
         </div>
       </div>
     </div>

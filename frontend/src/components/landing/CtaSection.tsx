@@ -12,8 +12,9 @@ export default function CtaSection() {
           duration={800}
           className="mb-3"
         >
-          <h2 className="text-3xl font-bold">
-            Sua próxima entrevista pode ser diferente.
+          <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl">
+            Sua próxima entrevista pode ser{" "}
+            <span className="italic text-primary-500">diferente.</span>
           </h2>
         </AnimatedSection>
 
